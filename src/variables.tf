@@ -1,19 +1,26 @@
-variable "cluster_name" {
+variable "proxmox_virtual_environment_nodes" {
+  type    = list(string)
+  default = [ "pve" ]
+}
+
+variable "talos_cluster_name" {
   type    = string
-  default = "homelab"
+  default = "talos-k8s"
 }
 
 variable "default_gateway" {
   type    = string
-  default = "<IP address of your default gateway>"
+  default = "10.1.1.1"
 }
 
-variable "talos_cp_01_ip_addr" {
-  type    = string
-  default = "<an unused IP address in your network>"
+# Count of IP Addresses = Number of Talos Control Plane Nodes to Provision
+variable "talos_cp_ips" {
+  type    = list(string)
+  default = [ "10.1.1.11", "10.1.1.12", "10.1.1.13" ]
 }
 
-variable "talos_worker_01_ip_addr" {
-  type    = string
-  default = "<an unused IP address in your network>"
+# Count of IP Addresses = Number of Talos Worker Nodes to Provision
+variable "talos_worker_ips" {
+  type    = list(string)
+  default = [ "10.1.1.21", "10.1.1.22", "10.1.1.23" ]
 }
