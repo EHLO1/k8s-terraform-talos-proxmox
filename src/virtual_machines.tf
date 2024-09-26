@@ -80,7 +80,7 @@ resource "proxmox_virtual_environment_vm" "talos_worker" {
     file_id      = proxmox_virtual_environment_download_file.talos_nocloud_image.id
     file_format  = "raw"
     interface    = "virtio0"
-    size         = 20
+    size         = 40
   }
 
   operating_system {

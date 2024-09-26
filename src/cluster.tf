@@ -22,24 +22,24 @@ resource "talos_machine_configuration_apply" "cp_config_apply" {
 }
 
 data "talos_machine_configuration" "machineconfig_worker" {
-  cluster_name     = var.cluster_name
-  cluster_endpoint = "https://${var.talos_cp_01_ip_addr}:6443"
+  cluster_name     = var.talos_cluster_name
+  cluster_endpoint = "https://${var.talos_cp_ips[0]}:6443"
   machine_type     = "worker"
   machine_secrets  = talos_machine_secrets.machine_secrets.machine_secrets
 }
 
 resource "talos_machine_configuration_apply" "worker_config_apply" {
-  depends_on                  = [ proxmox_virtual_environment_vm.talos_worker_01 ]
+  depends_on                  = [ proxmox_virtual_environment_vm.talos-worker-01 ]
   client_configuration        = talos_machine_secrets.machine_secrets.client_configuration
   machine_configuration_input = data.talos_machine_configuration.machineconfig_worker.machine_configuration
   count                       = 1
-  node                        = var.talos_worker_01_ip_addr
+  node                        = var.talos_worker_ips[count.index]
 }
 
 resource "talos_machine_bootstrap" "bootstrap" {
   depends_on           = [ talos_machine_configuration_apply.cp_config_apply ]
   client_configuration = talos_machine_secrets.machine_secrets.client_configuration
-  node                 = var.talos_cp_01_ip_addr
+  node                 = var.talos_cp_ips[0]
 }
 
 data "talos_cluster_health" "health" {
